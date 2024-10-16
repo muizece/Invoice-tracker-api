@@ -1,0 +1,12 @@
+D:\WOQOD\WoqodStore\WoqodData\bin\Debug\net6.0\WoqodData.deps.json
+D:\WOQOD\WoqodStore\WoqodData\bin\Debug\net6.0\WoqodData.dll
+D:\WOQOD\WoqodStore\WoqodData\bin\Debug\net6.0\WoqodData.pdb
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.csproj.AssemblyReference.cache
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.GeneratedMSBuildEditorConfig.editorconfig
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.AssemblyInfoInputs.cache
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.AssemblyInfo.cs
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.csproj.CoreCompileInputs.cache
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.dll
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\refint\WoqodData.dll
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\WoqodData.pdb
+D:\WOQOD\WoqodStore\WoqodData\obj\Debug\net6.0\ref\WoqodData.dll
