@@ -68,7 +68,7 @@ namespace WoqodStoreApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data format. Please check your input.");
+                return BadRequest(new { message = "Invalid data format. Please check your input." });
             }
 
             try
@@ -77,23 +77,23 @@ namespace WoqodStoreApi.Controllers
 
                 if (existingInvoice == null)
                 {
-                    return NotFound($"Invoice with ID {id} does not exist.");
+                    return NotFound(new { message = $"Invoice with ID {id} does not exist." });
                 }
 
-                updatedInvoice.Id = id; 
+                updatedInvoice.Id = id;
 
                 var result = await _invoiceRepository.UpdateInvoice(updatedInvoice);
 
                 if (!result)
                 {
-                    return BadRequest("Failed to update the invoice.");
+                    return BadRequest(new { message = "Failed to update the invoice." });
                 }
 
-                return Ok("Invoice updated successfully.");
+                return Ok(new { message = "Invoice updated successfully." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while updating the invoice: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred while updating the invoice: {ex.Message}" });
             }
         }
 

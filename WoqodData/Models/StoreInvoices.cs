@@ -15,7 +15,7 @@ namespace WoqodData.Models
         public decimal TotalAmount { get; set; }
         public DateTime InvoiceDate { get; set; }
         public long MobileNumber { get; set; }
-        public string ProofOfIdentity { get; set; }
+        public string Passport { get; set; }
         public string Email { get; set; }
         public string CustomerName { get; set; }
         public long QID { get; set; }

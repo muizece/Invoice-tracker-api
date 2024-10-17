@@ -38,7 +38,7 @@ namespace WoqodData.Repository
         {
             try
             {
-                string query = "update dbo.StoreInvoices set customerName=@CustomerName, email=@Email,proofOfIdentity=@ProofOfIdentity, qid=@Qid ,mobileNumber=@MobileNumber where id=@Id";
+                string query = "update dbo.StoreInvoices set customerName=@CustomerName, email=@Email,passport=@Passport, qid=@Qid ,mobileNumber=@MobileNumber where id=@Id";
                 await _db.SaveData(query, storeInvoices);
                 return true;
             }
