@@ -17,14 +17,24 @@ namespace WoqodData.Repository
             _db = db;
         }
 
-        public async Task<IEnumerable<StoreInvoices>> GetInvoices(long receiptNo, int storeId, DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<StoreInvoices>> GetInvoices(long receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber)
         {
-            var parameters = new { ReceiptNo = receiptNo, StoreId = storeId, FromDate = fromDate, ToDate = toDate };
-            var query = "EXEC GetInvoices @ReceiptNo, @StoreId, @FromDate, @ToDate";
-            var invoices = await _db.GetData<StoreInvoices, dynamic>(query,parameters);
+            var parameters = new
+            {
+                ReceiptNo = receiptNo,
+                StoreId = storeId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                PageSize = pageSize,
+                PageNumber = pageNumber
+            };
+
+            var query = @"EXEC GetInvoicesWithPagination @ReceiptNo, @StoreId, @FromDate, @ToDate, @PageSize, @PageNumber";
+            var invoices = await _db.GetData<StoreInvoices, dynamic>(query, parameters);
 
             return invoices;
         }
+
 
         public async Task<StoreInvoices> GetInvoiceById(int id)
         {

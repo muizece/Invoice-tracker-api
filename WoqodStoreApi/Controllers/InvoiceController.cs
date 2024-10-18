@@ -17,7 +17,7 @@ namespace WoqodStoreApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(long receiptNo, int storeId, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> Get(long receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize = 10, int pageNumber = 1)
         {
             var validationError = ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);
             if (validationError != null)
@@ -27,20 +27,21 @@ namespace WoqodStoreApi.Controllers
 
             try
             {
-                var retrievedInvoices = await _invoiceRepository.GetInvoices(receiptNo, storeId, fromDate, toDate);
+                var retrievedInvoices = await _invoiceRepository.GetInvoices(receiptNo, storeId, fromDate, toDate, pageSize, pageNumber);
 
                 if (retrievedInvoices == null || !retrievedInvoices.Any())
                 {
-                    return NotFound("No invoices found for the given criteria.");
+                    return Ok(new { message = "No invoices found for the given criteria.", data = new List<StoreInvoices>() });
                 }
 
                 return Ok(retrievedInvoices); // Return 200 status with the invoice data
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching invoices: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred while fetching invoices: {ex.Message}" });
             }
         }
+
 
 
         [HttpGet("{id}")]
@@ -59,7 +60,7 @@ namespace WoqodStoreApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching the invoice: {ex.Message}");
+                return StatusCode(500, new { message =  $"An error occurred while fetching the invoice: {ex.Message}" });
             }
         }
 
