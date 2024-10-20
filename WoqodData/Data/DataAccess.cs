@@ -22,7 +22,7 @@ namespace WoqodData.Data
         }
 
         //this method will return list of data
-        public async Task<IEnumerable<T>> GetData<T,P>(string query , P parameters,
+        public async Task<IEnumerable<T>> GetData<T,P>(string query , P parameters, CommandType commandType,
             string connectionId= "default")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));

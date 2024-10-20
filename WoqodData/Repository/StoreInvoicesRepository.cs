@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WoqodData.Data;
 using WoqodData.Models;
+using CommandType = WoqodData.Data.CommandType;
 
 namespace WoqodData.Repository
 {
@@ -29,8 +31,9 @@ namespace WoqodData.Repository
                 PageNumber = pageNumber
             };
 
-            var query = @"EXEC GetInvoicesWithPagination @ReceiptNo, @StoreId, @FromDate, @ToDate, @PageSize, @PageNumber";
-            var invoices = await _db.GetData<StoreInvoices, dynamic>(query, parameters);
+            var query = "GetInvoicesWithPagination";
+
+            var invoices = await _db.GetData<StoreInvoices, dynamic>(query, parameters, CommandType.StoredProcedure);
 
             return invoices;
         }
@@ -39,7 +42,7 @@ namespace WoqodData.Repository
         public async Task<StoreInvoices> GetInvoiceById(int id)
         {
             string query = "select * from dbo.StoreInvoices where id=@Id";
-            IEnumerable<StoreInvoices> invoices = await _db.GetData<StoreInvoices, dynamic>(query, new {Id=id });
+            IEnumerable<StoreInvoices> invoices = await _db.GetData<StoreInvoices, dynamic>(query,  new {Id=id },CommandType.Text);
 
             return invoices.FirstOrDefault();
         }

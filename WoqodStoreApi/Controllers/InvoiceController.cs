@@ -2,6 +2,7 @@
 using WoqodData.Models;
 using WoqodData.Repository;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace WoqodStoreApi.Controllers
 {
@@ -10,10 +11,13 @@ namespace WoqodStoreApi.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly IStoreInvoicesRepository _invoiceRepository;
+        private readonly ILogger<InvoiceController> _logger;
 
-        public InvoiceController(IStoreInvoicesRepository invoiceRepository)
+
+        public InvoiceController(IStoreInvoicesRepository invoiceRepository, ILogger<InvoiceController> logger)
         {
             _invoiceRepository = invoiceRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -22,22 +26,26 @@ namespace WoqodStoreApi.Controllers
             var validationError = ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);
             if (validationError != null)
             {
+                _logger.LogWarning("Validation failed. Error: {ValidationError}", validationError);
                 return BadRequest(validationError);
             }
 
             try
             {
+                _logger.LogInformation("Fetching invoices from repository.");
                 var retrievedInvoices = await _invoiceRepository.GetInvoices(receiptNo, storeId, fromDate, toDate, pageSize, pageNumber);
 
                 if (retrievedInvoices == null || !retrievedInvoices.Any())
                 {
+                    _logger.LogInformation("No invoices found for the given criteria.");
                     return Ok(new { message = "No invoices found for the given criteria.", data = new List<StoreInvoices>() });
                 }
-
-                return Ok(retrievedInvoices); // Return 200 status with the invoice data
+                _logger.LogInformation("Invoices retrieved successfully.");
+                return Ok(retrievedInvoices); 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while fetching invoices.");
                 return StatusCode(500, new { message = $"An error occurred while fetching invoices: {ex.Message}" });
             }
         }
