@@ -3,6 +3,7 @@ using WoqodData.Models;
 using WoqodData.Repository;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using WoqodStoreBL.BusinessLayer;
 
 namespace WoqodStoreApi.Controllers
 {
@@ -23,7 +24,8 @@ namespace WoqodStoreApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(long receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize = 10, int pageNumber = 1)
         {
-            var validationError = ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);
+            InvoiceBL _invoiceBL =new InvoiceBL();
+            var validationError = _invoiceBL.ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);
             if (validationError != null)
             {
                 _logger.LogWarning("Validation failed. Error: {ValidationError}", validationError);
@@ -106,22 +108,7 @@ namespace WoqodStoreApi.Controllers
             }
         }
 
-        private string ValidateRequestParameters(long receiptNo, int storeId, DateTime fromDate, DateTime toDate)
-        {
-            if (fromDate > toDate)
-            {
-                return "Invalid date range. 'From Date' cannot be greater than 'To Date'.";
-            }
-            if (storeId <= 0)
-            {
-                return "Please provide a valid storeId.";
-            }
-            if (receiptNo <= 0)
-            {
-                return "Please provide a valid receipt number.";
-            }
-
-            return null; // All parameters are valid
-        }
     }
+
+    
 }
