@@ -83,5 +83,27 @@ namespace WoqodStore.UnitTestCases.WoqodStoreBL_UnitTestCase.BusinessLayer_UnitT
 
         }
 
+
+        [Fact]
+        public void ValidateRequestParameters_invalid_date_range()
+        {
+            //Arrange
+
+            int storedId = 1;
+            long receiptNo = 12345;
+            DateTime fromDate = new DateTime(2024, 10, 10);
+            DateTime toDate = new DateTime(2024, 01, 02);
+
+
+            //Act
+
+            string result = invoiceBL.ValidateRequestParameters(receiptNo, storedId, fromDate, toDate);
+
+            //Assert
+
+            Assert.Equal("Invalid date range. 'From Date' cannot be greater than 'To Date'.", result);
+
+        }
+
     }
 }
