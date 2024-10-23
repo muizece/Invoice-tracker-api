@@ -22,7 +22,7 @@ namespace WoqodStoreApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(long receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize = 10, int pageNumber = 1)
+        public async Task<IActionResult> Get(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize = 10, int pageNumber = 1)
         {
             InvoiceBL _invoiceBL =new InvoiceBL();
             var validationError = _invoiceBL.ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);

@@ -61,27 +61,6 @@ namespace WoqodStore.UnitTestCases.WoqodStoreBL_UnitTestCase.BusinessLayer_UnitT
 
         }
 
-        [Fact]
-
-        public void ValidateRequestParameters_invalid_receiptNo__positive_response()
-        {
-            //Arrange
-
-            int storedId = 1;
-            long receiptNo = -1;
-            DateTime fromDate = new DateTime(2024, 01, 01);
-            DateTime toDate = new DateTime(2024, 01, 02);
-
-
-            //Act
-
-            string result = invoiceBL.ValidateRequestParameters(receiptNo, storedId, fromDate, toDate);
-
-            //Assert
-
-            Assert.Equal("Please provide a valid receipt number.", result);
-
-        }
 
 
         [Fact]

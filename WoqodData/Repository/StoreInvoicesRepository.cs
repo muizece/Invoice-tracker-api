@@ -19,11 +19,11 @@ namespace WoqodData.Repository
             _db = db;
         }
 
-        public async Task<IEnumerable<StoreInvoices>> GetInvoices(long receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber)
+        public async Task<IEnumerable<StoreInvoices>> GetInvoices(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber)
         {
             var parameters = new
             {
-                ReceiptNo = receiptNo,
+                ReceiptNo = receiptNo ?? (object)DBNull.Value,
                 StoreId = storeId,
                 FromDate = fromDate,
                 ToDate = toDate,
