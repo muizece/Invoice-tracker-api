@@ -24,7 +24,7 @@ namespace WoqodStoreApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize = 10, int pageNumber = 1)
         {
-            InvoiceBL _invoiceBL =new InvoiceBL();
+            InvoiceBL _invoiceBL = new InvoiceBL();
             var validationError = _invoiceBL.ValidateRequestParameters(receiptNo, storeId, fromDate, toDate);
             if (validationError != null)
             {
@@ -34,16 +34,15 @@ namespace WoqodStoreApi.Controllers
 
             try
             {
-                _logger.LogInformation("Fetching invoices from repository.");
-                var retrievedInvoices = await _invoiceRepository.GetInvoices(receiptNo, storeId, fromDate, toDate, pageSize, pageNumber);
+                var paginatedResponse = await _invoiceRepository.GetInvoices(receiptNo, storeId, fromDate, toDate, pageSize, pageNumber);
 
-                if (retrievedInvoices == null || !retrievedInvoices.Any())
+                if (paginatedResponse.Data == null || !paginatedResponse.Data.Any())
                 {
                     _logger.LogInformation("No invoices found for the given criteria.");
-                    return Ok(new { message = "No invoices found for the given criteria.", data = new List<StoreInvoices>() });
+                    return Ok(new PaginatedResponse<StoreInvoices>(new List<StoreInvoices>(), 0));
                 }
-                _logger.LogInformation("Invoices retrieved successfully.");
-                return Ok(retrievedInvoices); 
+
+                return Ok(paginatedResponse);  
             }
             catch (Exception ex)
             {
@@ -51,7 +50,6 @@ namespace WoqodStoreApi.Controllers
                 return StatusCode(500, new { message = $"An error occurred while fetching invoices: {ex.Message}" });
             }
         }
-
 
 
         [HttpGet("{id}")]

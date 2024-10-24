@@ -13,8 +13,7 @@ namespace WoqodData.Repository
 
         Task<StoreInvoices> GetInvoiceById(int id);
 
-        Task<IEnumerable<StoreInvoices>> GetInvoices(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber);
-
+        Task<PaginatedResponse<StoreInvoices>> GetInvoices(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber);
     }
 
 

@@ -19,7 +19,7 @@ namespace WoqodData.Repository
             _db = db;
         }
 
-        public async Task<IEnumerable<StoreInvoices>> GetInvoices(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber)
+        public async Task<PaginatedResponse<StoreInvoices>> GetInvoices(long? receiptNo, int storeId, DateTime fromDate, DateTime toDate, int pageSize, int pageNumber)
         {
             var parameters = new
             {
@@ -33,16 +33,18 @@ namespace WoqodData.Repository
 
             var query = "GetInvoicesWithPagination";
 
-            var invoices = await _db.GetData<StoreInvoices, dynamic>(query, parameters, CommandType.StoredProcedure);
+            var (invoices, totalCount) = await _db.GetInvoicesWithTotalCount(query, parameters);
 
-            return invoices;
+            return new PaginatedResponse<StoreInvoices>(invoices, totalCount);
         }
+
+
 
 
         public async Task<StoreInvoices> GetInvoiceById(int id)
         {
-            string query = "select * from dbo.StoreInvoices where id=@Id";
-            IEnumerable<StoreInvoices> invoices = await _db.GetData<StoreInvoices, dynamic>(query,  new {Id=id },CommandType.Text);
+            string query = "GetStoreInvoiceById";
+            IEnumerable<StoreInvoices> invoices = await _db.GetData<StoreInvoices, dynamic>(query,  new {Id=id },CommandType.StoredProcedure);
 
             return invoices.FirstOrDefault();
         }
@@ -51,8 +53,8 @@ namespace WoqodData.Repository
         {
             try
             {
-                string query = "update dbo.StoreInvoices set customerName=@CustomerName, email=@Email,passport=@Passport, qid=@Qid ,mobileNumber=@MobileNumber where id=@Id";
-                await _db.SaveData(query, storeInvoices);
+                string query = "UpdateStoreInvoice";
+                await _db.SaveData(query, storeInvoices, CommandType.StoredProcedure);
                 return true;
             }
             catch(Exception ex)
